@@ -1,0 +1,41 @@
+
+> mcq-grading-system@0.0.0 build
+> vite build
+
+[36mvite v8.0.16 [32mbuilding client environment for production...[36m[39m
+[2Ktransforming...✓ 1015 modules transformed.
+[31m✗[39m Build failed in 1.03s
+[31merror during build:
+[31mBuild failed with 2 errors:
+
+[31m[UNRESOLVED_IMPORT] [0mCould not resolve '../../utils/exportCSV.js' in src/pages/admin/Results.jsx
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/pages/admin/Results.jsx:3:27 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m3 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0m[38;5;249me[0m[38;5;249mx[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249mC[0m[38;5;249mS[0m[38;5;249mV[0m[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m"../../utils/exportCSV.js"[38;5;249m;[0m
+ [38;5;240m  │[0m                           ─────────────┬────────────  
+ [38;5;240m  │[0m                                        ╰────────────── Module not found.
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: 'src/pages/admin/Results.jsx' is imported by the following path:
+ [38;5;240m  │[0m         - src/pages/admin/Results.jsx
+ [38;5;240m  │[0m         - src/routes/AppRoutes.jsx
+ [38;5;240m  │[0m         - src/App.jsx
+ [38;5;240m  │[0m         - src/main.jsx
+ [38;5;240m  │[0m         - index.html
+[38;5;246m───╯[0m
+
+[plugin vite:css] C:/Users/Tiliazelle/Desktop/MCQ GAS/mcq-grading-system/src/index.css:undefined:NaN
+Error: [postcss] It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
+    at ft (C:\Users\Tiliazelle\Desktop\MCQ GAS\mcq-grading-system\node_modules\tailwindcss\dist\lib.js:38:1643)
+    at LazyResult.runOnRoot (C:\Users\Tiliazelle\Desktop\MCQ GAS\mcq-grading-system\node_modules\postcss\lib\lazy-result.js:361:16)
+    at LazyResult.runAsync (C:\Users\Tiliazelle\Desktop\MCQ GAS\mcq-grading-system\node_modules\postcss\lib\lazy-result.js:290:26)
+    at LazyResult.async (C:\Users\Tiliazelle\Desktop\MCQ GAS\mcq-grading-system\node_modules\postcss\lib\lazy-result.js:192:30)
+    at LazyResult.then (C:\Users\Tiliazelle\Desktop\MCQ GAS\mcq-grading-system\node_modules\postcss\lib\lazy-result.js:449:17)[31m
+    at aggregateBindingErrorsIntoJsError (file:///C:/Users/Tiliazelle/Desktop/MCQ%20GAS/mcq-grading-system/node_modules/rolldown/dist/shared/error-BuvQYXuZ.mjs:48:18)
+    at unwrapBindingResult (file:///C:/Users/Tiliazelle/Desktop/MCQ%20GAS/mcq-grading-system/node_modules/rolldown/dist/shared/error-BuvQYXuZ.mjs:18:128)
+    at #build (file:///C:/Users/Tiliazelle/Desktop/MCQ%20GAS/mcq-grading-system/node_modules/rolldown/dist/shared/rolldown-build-CrPk_lZe.mjs:3246:34)
+    at async buildEnvironment (file:///C:/Users/Tiliazelle/Desktop/MCQ%20GAS/mcq-grading-system/node_modules/vite/dist/node/chunks/node.js:33253:64)
+    at async Object.build (file:///C:/Users/Tiliazelle/Desktop/MCQ%20GAS/mcq-grading-system/node_modules/vite/dist/node/chunks/node.js:33675:19)
+    at async Object.buildApp (file:///C:/Users/Tiliazelle/Desktop/MCQ%20GAS/mcq-grading-system/node_modules/vite/dist/node/chunks/node.js:33672:153)
+    at async CAC.<anonymous> (file:///C:/Users/Tiliazelle/Desktop/MCQ%20GAS/mcq-grading-system/node_modules/vite/dist/node/cli.js:777:3) {
+  errors: [Getter/Setter]
+}[39m
