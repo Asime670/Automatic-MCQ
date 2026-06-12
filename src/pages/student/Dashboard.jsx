@@ -43,6 +43,11 @@ export default function Dashboard() {
           {location.state.error}
         </div>
       )}
+      {location.state?.info && (
+        <div className="p-4 bg-blue-100 border border-blue-200 text-blue-700 rounded-md text-sm font-medium">
+          {location.state.info}
+        </div>
+      )}
       <div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Welcome back, {user.name}!</h1>
         <p className="mt-1 text-gray-500 dark:text-gray-400">Here's an overview of your progress.</p>

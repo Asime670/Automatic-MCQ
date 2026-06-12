@@ -5,12 +5,15 @@ import StatCard from '../../components/StatCard.jsx';
 import { examService } from '../../services/examService.js';
 import { resultService } from '../../services/resultService.js';
 import { storageService } from '../../services/storageService.js';
+import { authService } from '../../services/authService.js';
 import { STORAGE_KEYS } from '../../utils/constants.js';
 
 export default function Dashboard() {
   const [stats, setStats] = useState({ totalExams: 0, totalStudents: 0, totalAttempts: 0, passRate: 0 });
   const [recentResults, setRecentResults] = useState([]);
   const [chartData, setChartData] = useState([]);
+  const [studentList, setStudentList] = useState([]);
+  const [pendingAdmins, setPendingAdmins] = useState([]);
 
   useEffect(() => {
     const exams = examService.getAllExams();
@@ -20,6 +23,13 @@ export default function Dashboard() {
 
     const passCount = results.filter(r => r.percentage >= 60).length;
     const passRate = results.length > 0 ? ((passCount / results.length) * 100).toFixed(1) : 0;
+
+    const list = students.map(student => ({
+      id: student.id,
+      name: student.name,
+      hasTakenExam: results.some(r => r.studentId === student.id)
+    }));
+    setStudentList(list);
 
     setStats({
       totalExams: exams.length,
@@ -36,10 +46,44 @@ export default function Dashboard() {
       return { name: exam.title.substring(0, 10) + '...', avgScore: Math.round(avgScore) };
     });
     setChartData(data);
+
+    const pending = authService.getPendingAdmins();
+    setPendingAdmins(pending);
   }, []);
+
+  const handleApproveAdmin = (userId) => {
+    authService.approveAdmin(userId);
+    setPendingAdmins(pendingAdmins.filter(u => u.id !== userId));
+  };
+
+  const handleRejectAdmin = (userId) => {
+    authService.rejectAdmin(userId);
+    setPendingAdmins(pendingAdmins.filter(u => u.id !== userId));
+  };
 
   return (
     <div className="space-y-6">
+      {pendingAdmins.length > 0 && (
+        <div className="bg-yellow-50 dark:bg-yellow-900/30 p-6 rounded-xl border border-yellow-200 dark:border-yellow-700/50 mb-6">
+          <h3 className="text-lg font-medium text-yellow-800 dark:text-yellow-400 mb-4">📧 Email Simulation: Pending Admin Requests</h3>
+          <p className="text-sm text-yellow-700 dark:text-yellow-500 mb-4">The following users have requested admin access. As the main administrator, please approve or reject them.</p>
+          <div className="space-y-4">
+            {pendingAdmins.map(admin => (
+              <div key={admin.id} className="flex items-center justify-between bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-yellow-100 dark:border-yellow-800">
+                <div>
+                  <p className="font-medium text-gray-900 dark:text-white">{admin.name}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{admin.email}</p>
+                </div>
+                <div className="flex space-x-3">
+                  <button onClick={() => handleApproveAdmin(admin.id)} className="px-3 py-1.5 bg-green-500 text-white rounded-md text-sm hover:bg-green-600 transition-colors">Approve</button>
+                  <button onClick={() => handleRejectAdmin(admin.id)} className="px-3 py-1.5 bg-red-500 text-white rounded-md text-sm hover:bg-red-600 transition-colors">Reject</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard title="Total Exams" value={stats.totalExams} icon={FiFileText} colorClass="bg-blue-500" />
         <StatCard title="Total Students" value={stats.totalStudents} icon={FiUsers} colorClass="bg-green-500" />
@@ -92,6 +136,35 @@ export default function Dashboard() {
               </tbody>
             </table>
           </div>
+        </div>
+      </div>
+
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Students Overview</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                <th className="pb-3 font-medium">Student Name</th>
+                <th className="pb-3 font-medium">Taken Exams?</th>
+              </tr>
+            </thead>
+            <tbody>
+              {studentList.map(student => (
+                <tr key={student.id} className="border-b border-gray-100 dark:border-gray-700 last:border-0">
+                  <td className="py-3 text-gray-900 dark:text-gray-200">{student.name}</td>
+                  <td className="py-3">
+                    <span className={`px-2 py-1 text-xs rounded-full ${student.hasTakenExam ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'}`}>
+                      {student.hasTakenExam ? 'Yes' : 'No'}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+              {studentList.length === 0 && (
+                <tr><td colSpan="2" className="py-4 text-center text-gray-500">No students registered yet.</td></tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
